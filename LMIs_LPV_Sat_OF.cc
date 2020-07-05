@@ -26,8 +26,6 @@ void Input_Dist_Dynamics (Matrix::t &W, Matrix::t &V, Matrix::t &H, Matrix::t &J
     V = Matrix::dense(new_array_ptr<double,2>({ {1000.0,100.0} }));
     H = Matrix::dense(new_array_ptr<double,2>({ {0.01}, {0.01} }));
     J = Matrix::dense(new_array_ptr<double,2>({ {0.0} }));
-   // J=0.0;
- //   return {W,H,V,J};
 }
 
 void Constant_Mats (int n_p, int n_d, double c_w_1, double c_w_2, Matrix::t &C_ew, Matrix::t &E, Matrix::t &G_A, Matrix::t &G_B, Matrix::t &G_D)
@@ -37,7 +35,6 @@ void Constant_Mats (int n_p, int n_d, double c_w_1, double c_w_2, Matrix::t &C_e
     G_A = Matrix::dense(new_array_ptr<double,2>({ {0.005,0.0},{0.0, 0.0} }));
     G_B = Matrix::dense(new_array_ptr<double,2>({ {0.005},{0.0} }));        
     G_D = Matrix::dense(new_array_ptr<double,2>({ {0.0, 0.0},{0.0, 0.0} }));    
-//    return {C_ew, E, G_A, G_B, G_D};
 }
 
 
@@ -52,10 +49,8 @@ int main(int argc, char ** argv)
     double kappa=50.0, epsilon=5.0, u_bar=120.0;
     double delta_1=1.0e-8, W_e=0.1, W_u=0.3, delta=4.0e-5, c_w_1=0.01, c_w_2=0.01, inequality = 1.0e-8;
     double v_1_val = 0.06 , v_2_val = 2.0e-4, v_3_val = 0.5, theta_max=8.0, theta_prime = 1.0;
-//     cout<<v_2<<'\n';
 
     Matrix::t A_p,B_p,D_p,C_y,C_z,D_zu,D_zd, W, V, H, J, C_ew, E, G_A, G_B, G_D;
-  //  double J;
     System_Dynamics (rho_1_vec[0], rho_2_vec[0], delta_1, W_e, W_u, A_p,B_p,D_p,C_y,C_z,D_zu,D_zd);
 
     Input_Dist_Dynamics(W, V, H, J);
@@ -218,8 +213,6 @@ int main(int argc, char ** argv)
     auto t_bar_theta_5 = M->variable("t_bar_theta_5", n_u, Domain::unbounded());
     auto t_bar_theta_6 = M->variable("t_bar_theta_6", n_u, Domain::unbounded());
 
-//     auto x = M->variable(n);
-
     auto T_bar_theta_0 = Expr::add(
                             make_shared<ndarray<Expression::t,1>>(
                             shape(n_u), 
@@ -290,15 +283,6 @@ int main(int argc, char ** argv)
                                                 new_array_ptr<int, 1>({i}), 
                                                 new_array_ptr<double, 1>({1.0})) 
                              );}));
-
-//            auto T_bar_theta_0 = M->variable( new_array_ptr<int,1>({n_u,n_u}), Domain::unbounded() ) ;
-//            Matrix::t T_bar_theta_0 = Matrix::diag(new_array_ptr<int,1>({n_u,n_u}) t_bar_theta_0);
-//            auto T_bar_theta_1 = M->variable( new_array_ptr<int,1>({n_u,n_u}), Domain::unbounded() ) ;
-//           auto T_bar_theta_2 = M->variable( new_array_ptr<int,1>({n_u,n_u}), Domain::unbounded() ) ;
-//          auto T_bar_theta_3 = M->variable( new_array_ptr<int,1>({n_u,n_u}), Domain::unbounded() ) ;
-//         auto T_bar_theta_4 = M->variable( new_array_ptr<int,1>({n_u,n_u}), Domain::unbounded() ) ;
-//         auto T_bar_theta_5 = M->variable( new_array_ptr<int,1>({n_u,n_u}), Domain::unbounded() ) ;
-//         auto T_bar_theta_6 = M->variable( new_array_ptr<int,1>({n_u,n_u}), Domain::unbounded() ) ;
         
     auto G_hat_theta_0 = M->variable( new_array_ptr<int,1>({n_u,2*n_p+n_omega}), Domain::unbounded() ) ;
     auto G_hat_theta_1 = M->variable( new_array_ptr<int,1>({n_u,2*n_p+n_omega}), Domain::unbounded() ) ;
@@ -458,14 +442,6 @@ int main(int argc, char ** argv)
                     auto L_67 = Expr::transpose(D_w);
                     auto L_68 = Expr::constTerm(Matrix::sparse((*D_w->getShape())[1], 3*n_p));
                     auto L_69 = Expr::mul(epsilon, Expr::transpose(Expr::vstack(Expr::hstack(Expr::constTerm(G_D), Expr::mul(G_B, Expr::constTerm(J))), Expr::constTerm(Matrix::sparse(2*n_p, n_d+n_nu)))) );
-                    
-                    // cout<<(*L_16->getShape())[0]<<'\n'<<(*L_26->getShape())[0]<<'\n'<<(*L_36->getShape())[0]<<'\n'<<(*L_46->getShape())[0]<<'\n'<<(*L_56->getShape())[0]<<'\n'<<(*L_66->getShape())[1]<<'\n'<<(*L_67->getShape())[1]<<'\n'<<(*L_68->getShape())[1]<<'\n'<<(*L_69->getShape())[1]<<'\n';
-
-                   // cout<<(*L_15->getShape())[0]<<'\n'<<(*L_25->getShape())[0]<<'\n'<<(*L_35->getShape())[0]<<'\n'<<(*L_45->getShape())[0]<<'\n'<<(*L_55->getShape())[1]<<'\n'<<(*L_56->getShape())[1]<<'\n'<<(*L_57->getShape())[1]<<'\n'<<(*L_58->getShape())[1]<<'\n'<<(*L_59->getShape())[1]<<'\n';
-              //      cout<<(*L_15->getShape())[0]<<'\t'<<(*L_25->getShape())[0]<<'\t'<<(*L_35->getShape())[0]<<'\t'<<(*L_45->getShape())[0]<<'\t'<<(*L_55->getShape())[1]<<'\t'<<(*L_56->getShape())[1]<<'\t'<<(*L_57->getShape())[1]<<'\t'<<(*L_58->getShape())[1]<<'\t'<<(*L_59->getShape())[1]<<'\n';
-                    
-                //    cout<<(*L_16->getShape())[0]<<'\t'<<(*L_26->getShape())[0]<<'\t'<<(*L_36->getShape())[0]<<'\t'<<(*L_46->getShape())[0]<<'\t'<<(*L_56->getShape())[0]<<'\t'<<(*L_66->getShape())[1]<<'\t'<<(*L_67->getShape())[1]<<'\t'<<(*L_68->getShape())[1]<<'\t'<<(*L_69->getShape())[1]<<'\n';
-
                     
                     auto L_77 = Expr::mul(-1, Expr::mul(gamma_sq, Matrix::eye((*D_w->getShape())[0])));
                     auto L_78 = Expr::constTerm(Matrix::sparse((*D_w->getShape())[0],3*n_p));
